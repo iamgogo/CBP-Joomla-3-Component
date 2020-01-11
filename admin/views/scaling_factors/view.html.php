@@ -3,9 +3,9 @@
 	Deutsche Gesellschaft für International Zusammenarbeit (GIZ) Gmb 
 /-------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 21 of this MVC
-	@build			16th August, 2016
-	@created		8th July, 2015
+	@version		3.4.x
+	@build			14th August, 2019
+	@created		15th June, 2012
 	@package		Cost Benefit Projection
 	@subpackage		view.html.php
 	@author			Llewellyn van der Merwe <http://www.vdm.io>	
@@ -19,9 +19,6 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla view library
-jimport('joomla.application.component.view');
 
 /**
  * Costbenefitprojection View class for the Scaling_factors
@@ -48,6 +45,8 @@ class CostbenefitprojectionViewScaling_factors extends JViewLegacy
 		$this->listOrder = $this->escape($this->state->get('list.ordering'));
 		$this->listDirn = $this->escape($this->state->get('list.direction'));
 		$this->saveOrder = $this->listOrder == 'ordering';
+		// set the return here value
+		$this->return_here = urlencode(base64_encode((string) JUri::getInstance()));
 		// get global action permissions
 		$this->canDo = CostbenefitprojectionHelper::getActions('scaling_factor');
 		$this->canEdit = $this->canDo->get('scaling_factor.edit');
@@ -127,7 +126,7 @@ class CostbenefitprojectionViewScaling_factors extends JViewLegacy
 				// add the button to the page
 				$dhtml = $layout->render(array('title' => $title));
 				$bar->appendButton('Custom', $dhtml, 'batch');
-			} 
+			}
 
 			if ($this->state->get('filter.published') == -2 && ($this->canState && $this->canDelete))
 			{
@@ -142,7 +141,7 @@ class CostbenefitprojectionViewScaling_factors extends JViewLegacy
 			{
 				JToolBarHelper::custom('scaling_factors.exportData', 'download', '', 'COM_COSTBENEFITPROJECTION_EXPORT_DATA', true);
 			}
-		} 
+		}
 
 		if ($this->canDo->get('core.import') && $this->canDo->get('scaling_factor.import'))
 		{
@@ -193,11 +192,19 @@ class CostbenefitprojectionViewScaling_factors extends JViewLegacy
 				'batch[access]',
 				JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text')
 			);
-		} 
+		}
 
 		// Set Causerisk Name Selection
-		$this->causeriskNameOptions = JFormHelper::loadFieldType('Causesrisks')->getOptions();
-		if ($this->causeriskNameOptions)
+		$this->causeriskNameOptions = JFormHelper::loadFieldType('Causesrisks')->options;
+		// We do some sanitation for Causerisk Name filter
+		if (CostbenefitprojectionHelper::checkArray($this->causeriskNameOptions) &&
+			isset($this->causeriskNameOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->causeriskNameOptions[0]->value))
+		{
+			unset($this->causeriskNameOptions[0]);
+		}
+		// Only load Causerisk Name filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->causeriskNameOptions))
 		{
 			// Causerisk Name Filter
 			JHtmlSidebar::addFilter(
@@ -218,8 +225,16 @@ class CostbenefitprojectionViewScaling_factors extends JViewLegacy
 		}
 
 		// Set Company Name Selection
-		$this->companyNameOptions = JFormHelper::loadFieldType('Company')->getOptions();
-		if ($this->companyNameOptions)
+		$this->companyNameOptions = JFormHelper::loadFieldType('Company')->options;
+		// We do some sanitation for Company Name filter
+		if (CostbenefitprojectionHelper::checkArray($this->companyNameOptions) &&
+			isset($this->companyNameOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->companyNameOptions[0]->value))
+		{
+			unset($this->companyNameOptions[0]);
+		}
+		// Only load Company Name filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->companyNameOptions))
 		{
 			// Company Name Filter
 			JHtmlSidebar::addFilter(

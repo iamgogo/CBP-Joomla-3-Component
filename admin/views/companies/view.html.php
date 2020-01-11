@@ -3,9 +3,9 @@
 	Deutsche Gesellschaft für International Zusammenarbeit (GIZ) Gmb 
 /-------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 101 of this MVC
-	@build			29th June, 2016
-	@created		15th July, 2015
+	@version		3.4.x
+	@build			14th August, 2019
+	@created		15th June, 2012
 	@package		Cost Benefit Projection
 	@subpackage		view.html.php
 	@author			Llewellyn van der Merwe <http://www.vdm.io>	
@@ -19,9 +19,6 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla view library
-jimport('joomla.application.component.view');
 
 /**
  * Costbenefitprojection View class for the Companies
@@ -48,6 +45,8 @@ class CostbenefitprojectionViewCompanies extends JViewLegacy
 		$this->listOrder = $this->escape($this->state->get('list.ordering'));
 		$this->listDirn = $this->escape($this->state->get('list.direction'));
 		$this->saveOrder = $this->listOrder == 'ordering';
+		// set the return here value
+		$this->return_here = urlencode(base64_encode((string) JUri::getInstance()));
 		// get global action permissions
 		$this->canDo = CostbenefitprojectionHelper::getActions('company');
 		$this->canEdit = $this->canDo->get('company.edit');
@@ -131,7 +130,7 @@ class CostbenefitprojectionViewCompanies extends JViewLegacy
 		{
 			// add Combined Results button.
 			JToolBarHelper::custom('companies.redirectToCombinedresults', 'cogs', '', 'COM_COSTBENEFITPROJECTION_COMBINEDRESULTS', true);
-		} 
+		}
 
 			if ($this->state->get('filter.published') == -2 && ($this->canState && $this->canDelete))
 			{
@@ -146,7 +145,7 @@ class CostbenefitprojectionViewCompanies extends JViewLegacy
 			{
 				JToolBarHelper::custom('companies.exportData', 'download', '', 'COM_COSTBENEFITPROJECTION_EXPORT_DATA', true);
 			}
-		} 
+		}
 
 		if ($this->canDo->get('core.import') && $this->canDo->get('company.import'))
 		{
@@ -197,11 +196,19 @@ class CostbenefitprojectionViewCompanies extends JViewLegacy
 				'batch[access]',
 				JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text')
 			);
-		} 
+		}
 
 		// Set Department Selection
 		$this->departmentOptions = $this->getTheDepartmentSelections();
-		if ($this->departmentOptions)
+		// We do some sanitation for Department filter
+		if (CostbenefitprojectionHelper::checkArray($this->departmentOptions) &&
+			isset($this->departmentOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->departmentOptions[0]->value))
+		{
+			unset($this->departmentOptions[0]);
+		}
+		// Only load Department filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->departmentOptions))
 		{
 			// Department Filter
 			JHtmlSidebar::addFilter(
@@ -222,8 +229,16 @@ class CostbenefitprojectionViewCompanies extends JViewLegacy
 		}
 
 		// Set Country Name Selection
-		$this->countryNameOptions = JFormHelper::loadFieldType('Countries')->getOptions();
-		if ($this->countryNameOptions)
+		$this->countryNameOptions = JFormHelper::loadFieldType('Countries')->options;
+		// We do some sanitation for Country Name filter
+		if (CostbenefitprojectionHelper::checkArray($this->countryNameOptions) &&
+			isset($this->countryNameOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->countryNameOptions[0]->value))
+		{
+			unset($this->countryNameOptions[0]);
+		}
+		// Only load Country Name filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->countryNameOptions))
 		{
 			// Country Name Filter
 			JHtmlSidebar::addFilter(
@@ -244,8 +259,16 @@ class CostbenefitprojectionViewCompanies extends JViewLegacy
 		}
 
 		// Set Service Provider User Selection
-		$this->service_providerUserOptions = JFormHelper::loadFieldType('Serviceprovider')->getOptions();
-		if ($this->service_providerUserOptions)
+		$this->service_providerUserOptions = JFormHelper::loadFieldType('Serviceprovider')->options;
+		// We do some sanitation for Service Provider User filter
+		if (CostbenefitprojectionHelper::checkArray($this->service_providerUserOptions) &&
+			isset($this->service_providerUserOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->service_providerUserOptions[0]->value))
+		{
+			unset($this->service_providerUserOptions[0]);
+		}
+		// Only load Service Provider User filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->service_providerUserOptions))
 		{
 			// Service Provider User Filter
 			JHtmlSidebar::addFilter(
@@ -267,7 +290,15 @@ class CostbenefitprojectionViewCompanies extends JViewLegacy
 
 		// Set Per Selection
 		$this->perOptions = $this->getThePerSelections();
-		if ($this->perOptions)
+		// We do some sanitation for Per filter
+		if (CostbenefitprojectionHelper::checkArray($this->perOptions) &&
+			isset($this->perOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->perOptions[0]->value))
+		{
+			unset($this->perOptions[0]);
+		}
+		// Only load Per filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->perOptions))
 		{
 			// Per Filter
 			JHtmlSidebar::addFilter(

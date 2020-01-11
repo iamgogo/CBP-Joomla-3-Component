@@ -3,8 +3,8 @@
 	Deutsche Gesellschaft für International Zusammenarbeit (GIZ) Gmb 
 /-------------------------------------------------------------------------------------------------------/
 
-	@version		3.4.3
-	@build			17th May, 2018
+	@version		3.4.x
+	@build			14th August, 2019
 	@created		15th June, 2012
 	@package		Cost Benefit Projection
 	@subpackage		router.php
@@ -242,6 +242,8 @@ class CostbenefitprojectionRouter extends JComponentRouterBase
 		{
 			$getTable = '#__categories';
 			$query->from($db->quoteName($getTable));
+			// we need this to target the components categories (TODO will keep an eye on this)
+			$query->where($db->quoteName('extension') . ' LIKE '. $db->quote((string)'com_' . $main . '%'));
 		}
 		else
 		{

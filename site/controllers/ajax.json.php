@@ -3,8 +3,8 @@
 	Deutsche Gesellschaft für International Zusammenarbeit (GIZ) Gmb 
 /-------------------------------------------------------------------------------------------------------/
 
-	@version		3.4.3
-	@build			17th May, 2018
+	@version		3.4.x
+	@build			14th August, 2019
 	@created		15th June, 2012
 	@package		Cost Benefit Projection
 	@subpackage		ajax.json.php
@@ -19,9 +19,6 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla controllerform library
-jimport('joomla.application.component.controller');
 
 /**
  * Costbenefitprojection Ajax Controller
@@ -50,7 +47,7 @@ class CostbenefitprojectionControllerAjax extends JControllerLegacy
 		// Check Token!
 		$token 		= JSession::getFormToken();
 		$call_token	= $jinput->get('token', 0, 'ALNUM');
-		if($token == $call_token)
+		if($jinput->get($token, 0, 'ALNUM') || $token === $call_token)
 		{
 			$task = $this->getTask();
 			switch($task)

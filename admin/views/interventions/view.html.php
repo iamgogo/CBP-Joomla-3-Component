@@ -3,9 +3,9 @@
 	Deutsche Gesellschaft für International Zusammenarbeit (GIZ) Gmb 
 /-------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 71 of this MVC
-	@build			12th November, 2016
-	@created		8th July, 2015
+	@version		3.4.x
+	@build			14th August, 2019
+	@created		15th June, 2012
 	@package		Cost Benefit Projection
 	@subpackage		view.html.php
 	@author			Llewellyn van der Merwe <http://www.vdm.io>	
@@ -19,9 +19,6 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla view library
-jimport('joomla.application.component.view');
 
 /**
  * Costbenefitprojection View class for the Interventions
@@ -48,6 +45,8 @@ class CostbenefitprojectionViewInterventions extends JViewLegacy
 		$this->listOrder = $this->escape($this->state->get('list.ordering'));
 		$this->listDirn = $this->escape($this->state->get('list.direction'));
 		$this->saveOrder = $this->listOrder == 'ordering';
+		// set the return here value
+		$this->return_here = urlencode(base64_encode((string) JUri::getInstance()));
 		// get global action permissions
 		$this->canDo = CostbenefitprojectionHelper::getActions('intervention');
 		$this->canEdit = $this->canDo->get('intervention.edit');
@@ -127,7 +126,7 @@ class CostbenefitprojectionViewInterventions extends JViewLegacy
 				// add the button to the page
 				$dhtml = $layout->render(array('title' => $title));
 				$bar->appendButton('Custom', $dhtml, 'batch');
-			} 
+			}
 
 			if ($this->state->get('filter.published') == -2 && ($this->canState && $this->canDelete))
 			{
@@ -142,7 +141,7 @@ class CostbenefitprojectionViewInterventions extends JViewLegacy
 			{
 				JToolBarHelper::custom('interventions.exportData', 'download', '', 'COM_COSTBENEFITPROJECTION_EXPORT_DATA', true);
 			}
-		} 
+		}
 
 		if ($this->canDo->get('core.import') && $this->canDo->get('intervention.import'))
 		{
@@ -193,11 +192,19 @@ class CostbenefitprojectionViewInterventions extends JViewLegacy
 				'batch[access]',
 				JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text')
 			);
-		} 
+		}
 
 		// Set Company Name Selection
-		$this->companyNameOptions = JFormHelper::loadFieldType('Company')->getOptions();
-		if ($this->companyNameOptions)
+		$this->companyNameOptions = JFormHelper::loadFieldType('Company')->options;
+		// We do some sanitation for Company Name filter
+		if (CostbenefitprojectionHelper::checkArray($this->companyNameOptions) &&
+			isset($this->companyNameOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->companyNameOptions[0]->value))
+		{
+			unset($this->companyNameOptions[0]);
+		}
+		// Only load Company Name filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->companyNameOptions))
 		{
 			// Company Name Filter
 			JHtmlSidebar::addFilter(
@@ -219,7 +226,15 @@ class CostbenefitprojectionViewInterventions extends JViewLegacy
 
 		// Set Type Selection
 		$this->typeOptions = $this->getTheTypeSelections();
-		if ($this->typeOptions)
+		// We do some sanitation for Type filter
+		if (CostbenefitprojectionHelper::checkArray($this->typeOptions) &&
+			isset($this->typeOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->typeOptions[0]->value))
+		{
+			unset($this->typeOptions[0]);
+		}
+		// Only load Type filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->typeOptions))
 		{
 			// Type Filter
 			JHtmlSidebar::addFilter(
@@ -241,7 +256,15 @@ class CostbenefitprojectionViewInterventions extends JViewLegacy
 
 		// Set Coverage Selection
 		$this->coverageOptions = $this->getTheCoverageSelections();
-		if ($this->coverageOptions)
+		// We do some sanitation for Coverage filter
+		if (CostbenefitprojectionHelper::checkArray($this->coverageOptions) &&
+			isset($this->coverageOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->coverageOptions[0]->value))
+		{
+			unset($this->coverageOptions[0]);
+		}
+		// Only load Coverage filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->coverageOptions))
 		{
 			// Coverage Filter
 			JHtmlSidebar::addFilter(
@@ -263,7 +286,15 @@ class CostbenefitprojectionViewInterventions extends JViewLegacy
 
 		// Set Duration Selection
 		$this->durationOptions = $this->getTheDurationSelections();
-		if ($this->durationOptions)
+		// We do some sanitation for Duration filter
+		if (CostbenefitprojectionHelper::checkArray($this->durationOptions) &&
+			isset($this->durationOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->durationOptions[0]->value))
+		{
+			unset($this->durationOptions[0]);
+		}
+		// Only load Duration filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->durationOptions))
 		{
 			// Duration Filter
 			JHtmlSidebar::addFilter(

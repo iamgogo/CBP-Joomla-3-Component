@@ -3,8 +3,8 @@
 	Deutsche Gesellschaft für International Zusammenarbeit (GIZ) Gmb 
 /-------------------------------------------------------------------------------------------------------/
 
-	@version		3.4.3
-	@build			17th May, 2018
+	@version		3.4.x
+	@build			14th August, 2019
 	@created		15th June, 2012
 	@package		Cost Benefit Projection
 	@subpackage		script.php
@@ -21,8 +21,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.modal');
-jimport('joomla.installer.installer');
-jimport('joomla.installer.helper');
 
 /**
  * Script File of Costbenefitprojection Component
@@ -30,21 +28,27 @@ jimport('joomla.installer.helper');
 class com_costbenefitprojectionInstallerScript
 {
 	/**
-	 * method to install the component
+	 * Constructor
 	 *
-	 * @return void
+	 * @param   JAdapterInstance  $parent  The object responsible for running this script
 	 */
-	function install($parent)
-	{
-
-	}
+	public function __construct(JAdapterInstance $parent) {}
 
 	/**
-	 * method to uninstall the component
+	 * Called on installation
 	 *
-	 * @return void
+	 * @param   JAdapterInstance  $parent  The object responsible for running this script
+	 *
+	 * @return  boolean  True on success
 	 */
-	function uninstall($parent)
+	public function install(JAdapterInstance $parent) {}
+
+	/**
+	 * Called on uninstallation
+	 *
+	 * @param   JAdapterInstance  $parent  The object responsible for running this script
+	 */
+	public function uninstall(JAdapterInstance $parent)
 	{
 		// Get Application object
 		$app = JFactory::getApplication();
@@ -77,7 +81,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Company items
 			$company_done = $db->execute();
-			if ($company_done);
+			if ($company_done)
 			{
 				// If succesfully remove Company add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.company) type alias was removed from the <b>#__content_type</b> table'));
@@ -92,7 +96,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Company items
 			$company_done = $db->execute();
-			if ($company_done);
+			if ($company_done)
 			{
 				// If succesfully remove Company add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.company) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
@@ -107,7 +111,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Company items
 			$company_done = $db->execute();
-			if ($company_done);
+			if ($company_done)
 			{
 				// If succesfully remove Company add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.company) type alias was removed from the <b>#__ucm_content</b> table'));
@@ -163,7 +167,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Service_provider items
 			$service_provider_done = $db->execute();
-			if ($service_provider_done);
+			if ($service_provider_done)
 			{
 				// If succesfully remove Service_provider add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.service_provider) type alias was removed from the <b>#__content_type</b> table'));
@@ -178,7 +182,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Service_provider items
 			$service_provider_done = $db->execute();
-			if ($service_provider_done);
+			if ($service_provider_done)
 			{
 				// If succesfully remove Service_provider add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.service_provider) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
@@ -193,7 +197,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Service_provider items
 			$service_provider_done = $db->execute();
-			if ($service_provider_done);
+			if ($service_provider_done)
 			{
 				// If succesfully remove Service_provider add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.service_provider) type alias was removed from the <b>#__ucm_content</b> table'));
@@ -249,7 +253,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Country items
 			$country_done = $db->execute();
-			if ($country_done);
+			if ($country_done)
 			{
 				// If succesfully remove Country add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.country) type alias was removed from the <b>#__content_type</b> table'));
@@ -264,7 +268,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Country items
 			$country_done = $db->execute();
-			if ($country_done);
+			if ($country_done)
 			{
 				// If succesfully remove Country add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.country) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
@@ -279,7 +283,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Country items
 			$country_done = $db->execute();
-			if ($country_done);
+			if ($country_done)
 			{
 				// If succesfully remove Country add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.country) type alias was removed from the <b>#__ucm_content</b> table'));
@@ -335,7 +339,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Causerisk items
 			$causerisk_done = $db->execute();
-			if ($causerisk_done);
+			if ($causerisk_done)
 			{
 				// If succesfully remove Causerisk add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.causerisk) type alias was removed from the <b>#__content_type</b> table'));
@@ -350,7 +354,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Causerisk items
 			$causerisk_done = $db->execute();
-			if ($causerisk_done);
+			if ($causerisk_done)
 			{
 				// If succesfully remove Causerisk add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.causerisk) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
@@ -365,7 +369,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Causerisk items
 			$causerisk_done = $db->execute();
-			if ($causerisk_done);
+			if ($causerisk_done)
 			{
 				// If succesfully remove Causerisk add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.causerisk) type alias was removed from the <b>#__ucm_content</b> table'));
@@ -421,7 +425,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Health_data items
 			$health_data_done = $db->execute();
-			if ($health_data_done);
+			if ($health_data_done)
 			{
 				// If succesfully remove Health_data add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.health_data) type alias was removed from the <b>#__content_type</b> table'));
@@ -436,7 +440,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Health_data items
 			$health_data_done = $db->execute();
-			if ($health_data_done);
+			if ($health_data_done)
 			{
 				// If succesfully remove Health_data add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.health_data) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
@@ -451,7 +455,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Health_data items
 			$health_data_done = $db->execute();
-			if ($health_data_done);
+			if ($health_data_done)
 			{
 				// If succesfully remove Health_data add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.health_data) type alias was removed from the <b>#__ucm_content</b> table'));
@@ -507,7 +511,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Scaling_factor items
 			$scaling_factor_done = $db->execute();
-			if ($scaling_factor_done);
+			if ($scaling_factor_done)
 			{
 				// If succesfully remove Scaling_factor add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.scaling_factor) type alias was removed from the <b>#__content_type</b> table'));
@@ -522,7 +526,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Scaling_factor items
 			$scaling_factor_done = $db->execute();
-			if ($scaling_factor_done);
+			if ($scaling_factor_done)
 			{
 				// If succesfully remove Scaling_factor add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.scaling_factor) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
@@ -537,7 +541,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Scaling_factor items
 			$scaling_factor_done = $db->execute();
-			if ($scaling_factor_done);
+			if ($scaling_factor_done)
 			{
 				// If succesfully remove Scaling_factor add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.scaling_factor) type alias was removed from the <b>#__ucm_content</b> table'));
@@ -593,7 +597,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Intervention items
 			$intervention_done = $db->execute();
-			if ($intervention_done);
+			if ($intervention_done)
 			{
 				// If succesfully remove Intervention add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.intervention) type alias was removed from the <b>#__content_type</b> table'));
@@ -608,7 +612,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Intervention items
 			$intervention_done = $db->execute();
-			if ($intervention_done);
+			if ($intervention_done)
 			{
 				// If succesfully remove Intervention add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.intervention) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
@@ -623,7 +627,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Intervention items
 			$intervention_done = $db->execute();
-			if ($intervention_done);
+			if ($intervention_done)
 			{
 				// If succesfully remove Intervention add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.intervention) type alias was removed from the <b>#__ucm_content</b> table'));
@@ -679,7 +683,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Currency items
 			$currency_done = $db->execute();
-			if ($currency_done);
+			if ($currency_done)
 			{
 				// If succesfully remove Currency add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.currency) type alias was removed from the <b>#__content_type</b> table'));
@@ -694,7 +698,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Currency items
 			$currency_done = $db->execute();
-			if ($currency_done);
+			if ($currency_done)
 			{
 				// If succesfully remove Currency add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.currency) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
@@ -709,7 +713,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Currency items
 			$currency_done = $db->execute();
-			if ($currency_done);
+			if ($currency_done)
 			{
 				// If succesfully remove Currency add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.currency) type alias was removed from the <b>#__ucm_content</b> table'));
@@ -765,7 +769,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Help_document items
 			$help_document_done = $db->execute();
-			if ($help_document_done);
+			if ($help_document_done)
 			{
 				// If succesfully remove Help_document add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.help_document) type alias was removed from the <b>#__content_type</b> table'));
@@ -780,7 +784,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Help_document items
 			$help_document_done = $db->execute();
-			if ($help_document_done);
+			if ($help_document_done)
 			{
 				// If succesfully remove Help_document add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.help_document) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
@@ -795,7 +799,7 @@ class com_costbenefitprojectionInstallerScript
 			$db->setQuery($query);
 			// Execute the query to remove Help_document items
 			$help_document_done = $db->execute();
-			if ($help_document_done);
+			if ($help_document_done)
 			{
 				// If succesfully remove Help_document add queued success message.
 				$app->enqueueMessage(JText::_('The (com_costbenefitprojection.help_document) type alias was removed from the <b>#__ucm_content</b> table'));
@@ -839,7 +843,7 @@ class com_costbenefitprojectionInstallerScript
 		$query->where($costbenefitprojection_condition);
 		$db->setQuery($query);
 		$help_document_done = $db->execute();
-		if ($help_document_done);
+		if ($help_document_done)
 		{
 			// If succesfully remove costbenefitprojection add queued success message.
 			$app->enqueueMessage(JText::_('All related items was removed from the <b>#__assets</b> table'));
@@ -854,57 +858,63 @@ class com_costbenefitprojectionInstallerScript
 	}
 
 	/**
-	 * method to update the component
+	 * Called on update
 	 *
-	 * @return void
+	 * @param   JAdapterInstance  $parent  The object responsible for running this script
+	 *
+	 * @return  boolean  True on success
 	 */
-	function update($parent)
-	{
-		
-	}
+	public function update(JAdapterInstance $parent){}
 
 	/**
-	 * method to run before an install/update/uninstall method
+	 * Called before any type of action
 	 *
-	 * @return void
+	 * @param   string  $type  Which action is happening (install|uninstall|discover_install|update)
+	 * @param   JAdapterInstance  $parent  The object responsible for running this script
+	 *
+	 * @return  boolean  True on success
 	 */
-	function preflight($type, $parent)
+	public function preflight($type, JAdapterInstance $parent)
 	{
 		// get application
 		$app = JFactory::getApplication();
-		// is redundant ...hmmm
-		if ($type == 'uninstall')
+		// is redundant or so it seems ...hmmm let me know if it works again
+		if ($type === 'uninstall')
 		{
 			return true;
 		}
 		// the default for both install and update
 		$jversion = new JVersion();
-		if (!$jversion->isCompatible('3.6.0'))
+		if (!$jversion->isCompatible('3.8.0'))
 		{
-			$app->enqueueMessage('Please upgrade to at least Joomla! 3.6.0 before continuing!', 'error');
+			$app->enqueueMessage('Please upgrade to at least Joomla! 3.8.0 before continuing!', 'error');
 			return false;
 		}
 		// do any updates needed
-		if ($type == 'update')
+		if ($type === 'update')
 		{
 		}
 		// do any install needed
-		if ($type == 'install')
+		if ($type === 'install')
 		{
 		}
+		return true;
 	}
 
 	/**
-	 * method to run after an install/update/uninstall method
+	 * Called after any type of action
 	 *
-	 * @return void
+	 * @param   string  $type  Which action is happening (install|uninstall|discover_install|update)
+	 * @param   JAdapterInstance  $parent  The object responsible for running this script
+	 *
+	 * @return  boolean  True on success
 	 */
-	function postflight($type, $parent)
+	public function postflight($type, JAdapterInstance $parent)
 	{
 		// get application
 		$app = JFactory::getApplication();
 		// set the default component settings
-		if ($type == 'install')
+		if ($type === 'install')
 		{
 
 			// Get The Database object
@@ -915,9 +925,9 @@ class com_costbenefitprojectionInstallerScript
 			$company->type_title = 'Costbenefitprojection Company';
 			$company->type_alias = 'com_costbenefitprojection.company';
 			$company->table = '{"special": {"dbtable": "#__costbenefitprojection_company","key": "id","type": "Company","prefix": "costbenefitprojectionTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
-			$company->field_mappings = '{"common": {"core_content_item_id": "id","core_title": "name","core_state": "published","core_alias": "null","core_created_time": "created","core_modified_time": "modified","core_body": "null","core_hits": "hits","core_publish_up": "null","core_publish_down": "null","core_access": "access","core_params": "params","core_featured": "null","core_metadata": "null","core_language": "null","core_images": "null","core_urls": "null","core_version": "version","core_ordering": "ordering","core_metakey": "null","core_metadesc": "null","core_catid": "null","core_xreference": "null","asset_id": "asset_id"},"special": {"name":"name","email":"email","user":"user","department":"department","country":"country","service_provider":"service_provider","per":"per","medical_turnovers_males":"medical_turnovers_males","females":"females","causesrisks":"causesrisks","sick_leave_males":"sick_leave_males","datayear":"datayear","medical_turnovers_females":"medical_turnovers_females","turnover_comment":"turnover_comment","working_days":"working_days","sick_leave_females":"sick_leave_females","total_salary":"total_salary","total_healthcare":"total_healthcare","productivity_losses":"productivity_losses","not_required":"not_required","males":"males"}}';
+			$company->field_mappings = '{"common": {"core_content_item_id": "id","core_title": "name","core_state": "published","core_alias": "null","core_created_time": "created","core_modified_time": "modified","core_body": "null","core_hits": "hits","core_publish_up": "null","core_publish_down": "null","core_access": "access","core_params": "params","core_featured": "null","core_metadata": "null","core_language": "null","core_images": "null","core_urls": "null","core_version": "version","core_ordering": "ordering","core_metakey": "null","core_metadesc": "null","core_catid": "null","core_xreference": "null","asset_id": "asset_id"},"special": {"email":"email","name":"name","user":"user","department":"department","country":"country","service_provider":"service_provider","per":"per","males":"males","working_days":"working_days","datayear":"datayear","sick_leave_males":"sick_leave_males","sick_leave_females":"sick_leave_females","total_salary":"total_salary","turnover_comment":"turnover_comment","causesrisks":"causesrisks","not_required":"not_required","productivity_losses":"productivity_losses","total_healthcare":"total_healthcare","females":"females","medical_turnovers_males":"medical_turnovers_males","medical_turnovers_females":"medical_turnovers_females"}}';
 			$company->router = 'CostbenefitprojectionHelperRoute::getCompanyRoute';
-			$company->content_history_options = '{"formFile": "administrator/components/com_costbenefitprojection/models/forms/company.xml","hideFields": ["asset_id","checked_out","checked_out_time","version","not_required"],"ignoreChanges": ["modified_by","modified","checked_out","checked_out_time","version","hits"],"convertToInt": ["published","ordering","user","department","country","service_provider","per","working_days","not_required"],"displayLookup": [{"sourceColumn": "created_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "access","targetTable": "#__viewlevels","targetColumn": "id","displayColumn": "title"},{"sourceColumn": "modified_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "user","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "country","targetTable": "#__costbenefitprojection_country","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "service_provider","targetTable": "#__costbenefitprojection_service_provider","targetColumn": "id","displayColumn": "user"},{"sourceColumn": "causesrisks","targetTable": "#__costbenefitprojection_causerisk","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "datayear","targetTable": "#__costbenefitprojection_health_data","targetColumn": "year","displayColumn": "country"}]}';
+			$company->content_history_options = '{"formFile": "administrator/components/com_costbenefitprojection/models/forms/company.xml","hideFields": ["asset_id","checked_out","checked_out_time","version","not_required"],"ignoreChanges": ["modified_by","modified","checked_out","checked_out_time","version","hits"],"convertToInt": ["published","ordering","user","department","country","service_provider","per","working_days","not_required"],"displayLookup": [{"sourceColumn": "created_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "access","targetTable": "#__viewlevels","targetColumn": "id","displayColumn": "title"},{"sourceColumn": "modified_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "user","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "country","targetTable": "#__costbenefitprojection_country","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "service_provider","targetTable": "#__costbenefitprojection_service_provider","targetColumn": "id","displayColumn": "user"},{"sourceColumn": "datayear","targetTable": "#__costbenefitprojection_health_data","targetColumn": "year","displayColumn": "country"},{"sourceColumn": "causesrisks","targetTable": "#__costbenefitprojection_causerisk","targetColumn": "id","displayColumn": "name"}]}';
 
 			// Set the object into the content types table.
 			$company_Inserted = $db->insertObject('#__content_types', $company);
@@ -1023,7 +1033,7 @@ class com_costbenefitprojectionInstallerScript
 			$query = $db->getQuery(true);
 			// Field to update.
 			$fields = array(
-				$db->quoteName('params') . ' = ' . $db->quote('{"autorName":"Llewellyn van der Merwe","autorEmail":"joomla@vdm.io","check_in":"-1 day","save_history":"1","history_limit":"10","titleContributor1":"Health Economist","nameContributor1":"Patrick Hanlon, M.Sc. PH","emailContributor1":"Patrick.Hanlon@unibas.ch","linkContributor1":"https://www.swisstph.ch/en/staff/profile/people/patrick-hanlon/","useContributor1":"2","showContributor1":"3","titleContributor2":"GIZ EWP CBA","nameContributor2":"Swiss TPH","emailContributor2":"","linkContributor2":"https://www.swisstph.ch/en/projects/project-detail/project/cost-benefit-projection-tool-for-employee-health-programmes/","useContributor2":"2","showContributor2":"3","titleContributor3":"Development Advisor","nameContributor3":"Matthew Black","emailContributor3":"matthew.black@giz.de","linkContributor3":"http://www.giz.de","useContributor3":"2","showContributor3":"3","titleContributor4":"Associate Expert","nameContributor4":"Dr. Pascal Geldsetzer","emailContributor4":"pascal.geldsetzer@giz.de","linkContributor4":"http://www.giz.de","useContributor4":"2","showContributor4":"1","memberuser":["2"],"serviceprovideruser":["2"],"countryuser":["2"],"uikit_load":"1","uikit_min":"","uikit_style":"","admin_chartbackground":"#F7F7FA","admin_mainwidth":"1000","admin_chartareatop":"20","admin_chartarealeft":"20","admin_chartareawidth":"170","admin_legendtextstylefontcolor":"10","admin_legendtextstylefontsize":"20","admin_vaxistextstylefontcolor":"#63B1F2","admin_haxistextstylefontcolor":"#63B1F2","admin_haxistitletextstylefontcolor":"#63B1F2","site_chartbackground":"#F7F7FA","site_mainwidth":"1000","site_chartareatop":"20","site_chartarealeft":"20","site_chartareawidth":"170","site_legendtextstylefontcolor":"10","site_legendtextstylefontsize":"20","site_vaxistextstylefontcolor":"#63B1F2","site_haxistextstylefontcolor":"#63B1F2","site_haxistitletextstylefontcolor":"#63B1F2"}'),
+				$db->quoteName('params') . ' = ' . $db->quote('{"autorName":"Llewellyn van der Merwe","autorEmail":"joomla@vdm.io","check_in":"-1 day","save_history":"1","history_limit":"10","titleContributor1":"Health Economist","nameContributor1":"Patrick Hanlon, M.Sc. PH","emailContributor1":"Patrick.Hanlon@unibas.ch","linkContributor1":"https://www.swisstph.ch/en/staff/profile/people/patrick-hanlon/","useContributor1":"2","showContributor1":"3","titleContributor2":"Development Advisor","nameContributor2":"Matthew Black","emailContributor2":"matthew.black@giz.de","linkContributor2":"http://www.giz.de","useContributor2":"2","showContributor2":"3","titleContributor3":"Associate Expert","nameContributor3":"Dr. Pascal Geldsetzer","emailContributor3":"pascal.geldsetzer@giz.de","linkContributor3":"http://www.giz.de","useContributor3":"2","showContributor3":"3","memberuser":["2"],"serviceprovideruser":["2"],"countryuser":["2"],"uikit_load":"1","uikit_min":"","uikit_style":"","admin_chartbackground":"#F7F7FA","admin_mainwidth":"1000","admin_chartareatop":"20","admin_chartarealeft":"20","admin_chartareawidth":"170","admin_legendtextstylefontcolor":"10","admin_legendtextstylefontsize":"20","admin_vaxistextstylefontcolor":"#63B1F2","admin_haxistextstylefontcolor":"#63B1F2","admin_haxistitletextstylefontcolor":"#63B1F2","site_chartbackground":"#F7F7FA","site_mainwidth":"1000","site_chartareatop":"20","site_chartarealeft":"20","site_chartareawidth":"170","site_legendtextstylefontcolor":"10","site_legendtextstylefontsize":"20","site_vaxistextstylefontcolor":"#63B1F2","site_haxistextstylefontcolor":"#63B1F2","site_haxistitletextstylefontcolor":"#63B1F2"}'),
 			);
 			// Condition.
 			$conditions = array(
@@ -1038,7 +1048,7 @@ class com_costbenefitprojectionInstallerScript
 				</a>';
 		}
 		// do any updates needed
-		if ($type == 'update')
+		if ($type === 'update')
 		{
 
 			// Get The Database object
@@ -1049,9 +1059,9 @@ class com_costbenefitprojectionInstallerScript
 			$company->type_title = 'Costbenefitprojection Company';
 			$company->type_alias = 'com_costbenefitprojection.company';
 			$company->table = '{"special": {"dbtable": "#__costbenefitprojection_company","key": "id","type": "Company","prefix": "costbenefitprojectionTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
-			$company->field_mappings = '{"common": {"core_content_item_id": "id","core_title": "name","core_state": "published","core_alias": "null","core_created_time": "created","core_modified_time": "modified","core_body": "null","core_hits": "hits","core_publish_up": "null","core_publish_down": "null","core_access": "access","core_params": "params","core_featured": "null","core_metadata": "null","core_language": "null","core_images": "null","core_urls": "null","core_version": "version","core_ordering": "ordering","core_metakey": "null","core_metadesc": "null","core_catid": "null","core_xreference": "null","asset_id": "asset_id"},"special": {"name":"name","email":"email","user":"user","department":"department","country":"country","service_provider":"service_provider","per":"per","medical_turnovers_males":"medical_turnovers_males","females":"females","causesrisks":"causesrisks","sick_leave_males":"sick_leave_males","datayear":"datayear","medical_turnovers_females":"medical_turnovers_females","turnover_comment":"turnover_comment","working_days":"working_days","sick_leave_females":"sick_leave_females","total_salary":"total_salary","total_healthcare":"total_healthcare","productivity_losses":"productivity_losses","not_required":"not_required","males":"males"}}';
+			$company->field_mappings = '{"common": {"core_content_item_id": "id","core_title": "name","core_state": "published","core_alias": "null","core_created_time": "created","core_modified_time": "modified","core_body": "null","core_hits": "hits","core_publish_up": "null","core_publish_down": "null","core_access": "access","core_params": "params","core_featured": "null","core_metadata": "null","core_language": "null","core_images": "null","core_urls": "null","core_version": "version","core_ordering": "ordering","core_metakey": "null","core_metadesc": "null","core_catid": "null","core_xreference": "null","asset_id": "asset_id"},"special": {"email":"email","name":"name","user":"user","department":"department","country":"country","service_provider":"service_provider","per":"per","males":"males","working_days":"working_days","datayear":"datayear","sick_leave_males":"sick_leave_males","sick_leave_females":"sick_leave_females","total_salary":"total_salary","turnover_comment":"turnover_comment","causesrisks":"causesrisks","not_required":"not_required","productivity_losses":"productivity_losses","total_healthcare":"total_healthcare","females":"females","medical_turnovers_males":"medical_turnovers_males","medical_turnovers_females":"medical_turnovers_females"}}';
 			$company->router = 'CostbenefitprojectionHelperRoute::getCompanyRoute';
-			$company->content_history_options = '{"formFile": "administrator/components/com_costbenefitprojection/models/forms/company.xml","hideFields": ["asset_id","checked_out","checked_out_time","version","not_required"],"ignoreChanges": ["modified_by","modified","checked_out","checked_out_time","version","hits"],"convertToInt": ["published","ordering","user","department","country","service_provider","per","working_days","not_required"],"displayLookup": [{"sourceColumn": "created_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "access","targetTable": "#__viewlevels","targetColumn": "id","displayColumn": "title"},{"sourceColumn": "modified_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "user","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "country","targetTable": "#__costbenefitprojection_country","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "service_provider","targetTable": "#__costbenefitprojection_service_provider","targetColumn": "id","displayColumn": "user"},{"sourceColumn": "causesrisks","targetTable": "#__costbenefitprojection_causerisk","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "datayear","targetTable": "#__costbenefitprojection_health_data","targetColumn": "year","displayColumn": "country"}]}';
+			$company->content_history_options = '{"formFile": "administrator/components/com_costbenefitprojection/models/forms/company.xml","hideFields": ["asset_id","checked_out","checked_out_time","version","not_required"],"ignoreChanges": ["modified_by","modified","checked_out","checked_out_time","version","hits"],"convertToInt": ["published","ordering","user","department","country","service_provider","per","working_days","not_required"],"displayLookup": [{"sourceColumn": "created_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "access","targetTable": "#__viewlevels","targetColumn": "id","displayColumn": "title"},{"sourceColumn": "modified_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "user","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "country","targetTable": "#__costbenefitprojection_country","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "service_provider","targetTable": "#__costbenefitprojection_service_provider","targetColumn": "id","displayColumn": "user"},{"sourceColumn": "datayear","targetTable": "#__costbenefitprojection_health_data","targetColumn": "year","displayColumn": "country"},{"sourceColumn": "causesrisks","targetTable": "#__costbenefitprojection_causerisk","targetColumn": "id","displayColumn": "name"}]}';
 
 			// Check if company type is already in content_type DB.
 			$company_id = null;
@@ -1309,7 +1319,8 @@ class com_costbenefitprojectionInstallerScript
 			echo '<a target="_blank" href="http://www.vdm.io" title="Cost Benefit Projection">
 				<img src="components/com_costbenefitprojection/assets/images/vdm-component.png"/>
 				</a>
-				<h3>Upgrade to Version 3.4.3 Was Successful! Let us know if anything is not working as expected.</h3>';
+				<h3>Upgrade to Version 3.4.4 Was Successful! Let us know if anything is not working as expected.</h3>';
 		}
+		return true;
 	}
 }

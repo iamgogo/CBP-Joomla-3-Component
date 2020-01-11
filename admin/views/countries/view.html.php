@@ -3,9 +3,9 @@
 	Deutsche Gesellschaft für International Zusammenarbeit (GIZ) Gmb 
 /-------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 54 of this MVC
-	@build			17th May, 2018
-	@created		25th July, 2015
+	@version		3.4.x
+	@build			14th August, 2019
+	@created		15th June, 2012
 	@package		Cost Benefit Projection
 	@subpackage		view.html.php
 	@author			Llewellyn van der Merwe <http://www.vdm.io>	
@@ -19,9 +19,6 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla view library
-jimport('joomla.application.component.view');
 
 /**
  * Costbenefitprojection View class for the Countries
@@ -48,6 +45,8 @@ class CostbenefitprojectionViewCountries extends JViewLegacy
 		$this->listOrder = $this->escape($this->state->get('list.ordering'));
 		$this->listDirn = $this->escape($this->state->get('list.direction'));
 		$this->saveOrder = $this->listOrder == 'ordering';
+		// set the return here value
+		$this->return_here = urlencode(base64_encode((string) JUri::getInstance()));
 		// get global action permissions
 		$this->canDo = CostbenefitprojectionHelper::getActions('country');
 		$this->canEdit = $this->canDo->get('country.edit');
@@ -127,7 +126,7 @@ class CostbenefitprojectionViewCountries extends JViewLegacy
 				// add the button to the page
 				$dhtml = $layout->render(array('title' => $title));
 				$bar->appendButton('Custom', $dhtml, 'batch');
-			} 
+			}
 
 			if ($this->state->get('filter.published') == -2 && ($this->canState && $this->canDelete))
 			{
@@ -142,7 +141,7 @@ class CostbenefitprojectionViewCountries extends JViewLegacy
 			{
 				JToolBarHelper::custom('countries.exportData', 'download', '', 'COM_COSTBENEFITPROJECTION_EXPORT_DATA', true);
 			}
-		} 
+		}
 
 		if ($this->canDo->get('core.import') && $this->canDo->get('country.import'))
 		{
@@ -193,11 +192,19 @@ class CostbenefitprojectionViewCountries extends JViewLegacy
 				'batch[access]',
 				JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text')
 			);
-		} 
+		}
 
 		// Set Currency Name Selection
-		$this->currencyNameOptions = JFormHelper::loadFieldType('Currency')->getOptions();
-		if ($this->currencyNameOptions)
+		$this->currencyNameOptions = JFormHelper::loadFieldType('Currency')->options;
+		// We do some sanitation for Currency Name filter
+		if (CostbenefitprojectionHelper::checkArray($this->currencyNameOptions) &&
+			isset($this->currencyNameOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->currencyNameOptions[0]->value))
+		{
+			unset($this->currencyNameOptions[0]);
+		}
+		// Only load Currency Name filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->currencyNameOptions))
 		{
 			// Currency Name Filter
 			JHtmlSidebar::addFilter(

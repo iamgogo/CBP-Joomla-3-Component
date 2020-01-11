@@ -3,9 +3,9 @@
 	Deutsche Gesellschaft für International Zusammenarbeit (GIZ) Gmb 
 /-------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 35 of this MVC
-	@build			22nd March, 2016
-	@created		25th July, 2015
+	@version		3.4.x
+	@build			14th August, 2019
+	@created		15th June, 2012
 	@package		Cost Benefit Projection
 	@subpackage		service_provider.php
 	@author			Llewellyn van der Merwe <http://www.vdm.io>	
@@ -22,20 +22,41 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Registry\Registry;
 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
-
 /**
  * Costbenefitprojection Service_provider Model
  */
 class CostbenefitprojectionModelService_provider extends JModelAdmin
-{    
+{
+	/**
+	 * The tab layout fields array.
+	 *
+	 * @var      array
+	 */
+	protected $tabLayoutFields = array(
+		'details' => array(
+			'left' => array(
+				'public_details_note',
+				'publicname',
+				'publicemail',
+				'publicnumber',
+				'publicaddress'
+			),
+			'right' => array(
+				'testcompanies'
+			),
+			'above' => array(
+				'user',
+				'country'
+			)
+		)
+	);
+
 	/**
 	 * @var        string    The prefix to use with controller messages.
 	 * @since   1.6
 	 */
 	protected $text_prefix = 'COM_COSTBENEFITPROJECTION';
-    
+
 	/**
 	 * The type alias for this content type.
 	 *
@@ -57,6 +78,9 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 	 */
 	public function getTable($type = 'service_provider', $prefix = 'CostbenefitprojectionTable', $config = array())
 	{
+		// add table path for when model gets used from other component
+		$this->addTablePath(JPATH_ADMINISTRATOR . '/components/com_costbenefitprojection/tables');
+		// get instance of the table
 		return JTable::getInstance($type, $prefix, $config);
 	}
     
@@ -107,10 +131,10 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 	}
 
 	/**
-	* Method to get list data.
-	*
-	* @return mixed  An array of data items on success, false on failure.
-	*/
+	 * Method to get list data.
+	 *
+	 * @return mixed  An array of data items on success, false on failure.
+	 */
 	public function getVwecompanies()
 	{
 		// Get the user object.
@@ -198,11 +222,9 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 			// set values to display correctly.
 			if (CostbenefitprojectionHelper::checkArray($items))
 			{
-				// get user object.
-				$user = JFactory::getUser();
 				foreach ($items as $nr => &$item)
 				{
-					$access = ($user->authorise('company.access', 'com_costbenefitprojection.company.' . (int) $item->id) && $user->authorise('company.access', 'com_costbenefitprojection'));
+					$access = (JFactory::getUser()->authorise('company.access', 'com_costbenefitprojection.company.' . (int) $item->id) && JFactory::getUser()->authorise('company.access', 'com_costbenefitprojection'));
 					if (!$access)
 					{
 						unset($items[$nr]);
@@ -230,10 +252,10 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 	}
 
 	/**
-	* Method to convert selection values to translatable string.
-	*
-	* @return translatable string
-	*/
+	 * Method to convert selection values to translatable string.
+	 *
+	 * @return translatable string
+	 */
 	public function selectionTranslationVwecompanies($value,$name)
 	{
 		// Array of department language strings
@@ -263,22 +285,25 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 			}
 		}
 		return $value;
-	} 
+	}
 
 	/**
 	 * Method to get the record form.
 	 *
 	 * @param   array    $data      Data for the form.
 	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @param   array    $options   Optional array of options for the form creation.
 	 *
 	 * @return  mixed  A JForm object on success, false on failure
 	 *
 	 * @since   1.6
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = array(), $loadData = true, $options = array('control' => 'jform'))
 	{
+		// set load data option
+		$options['load_data'] = $loadData;
 		// Get the form.
-		$form = $this->loadForm('com_costbenefitprojection.service_provider', 'service_provider', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_costbenefitprojection.service_provider', 'service_provider', $options);
 
 		if (empty($form))
 		{
@@ -339,17 +364,20 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 		// Only load these values if no id is found
 		if (0 == $id)
 		{
-			// Set redirected field name
-			$redirectedField = $jinput->get('ref', null, 'STRING');
-			// Set redirected field value
-			$redirectedValue = $jinput->get('refid', 0, 'INT');
+			// Set redirected view name
+			$redirectedView = $jinput->get('ref', null, 'STRING');
+			// Set field name (or fall back to view name)
+			$redirectedField = $jinput->get('field', $redirectedView, 'STRING');
+			// Set redirected view id
+			$redirectedId = $jinput->get('refid', 0, 'INT');
+			// Set field id (or fall back to redirected view id)
+			$redirectedValue = $jinput->get('field_id', $redirectedId, 'INT');
 			if (0 != $redirectedValue && $redirectedField)
 			{
 				// Now set the local-redirected field default value
 				$form->setValue($redirectedField, null, $redirectedValue);
 			}
 		}
-
 		return $form;
 	}
 
@@ -400,7 +428,7 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 	protected function canEditState($record)
 	{
 		$user = JFactory::getUser();
-		$recordId	= (!empty($record->id)) ? $record->id : 0;
+		$recordId = (!empty($record->id)) ? $record->id : 0;
 
 		if ($recordId)
 		{
@@ -508,7 +536,7 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 		}
 
 		return $data;
-	} 
+	}
 
 	/**
 	 * Method to get the unique fields of this table.
@@ -666,7 +694,7 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 	 *
 	 * @return  mixed  An array of new IDs on success, boolean false on failure.
 	 *
-	 * @since	12.2
+	 * @since 12.2
 	 */
 	protected function batchCopy($values, $pks, $contexts)
 	{
@@ -788,7 +816,7 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 			$this->table->id = 0;
 
 			// TODO: Deal with ordering?
-			// $this->table->ordering	= 1;
+			// $this->table->ordering = 1;
 
 			// Check the row.
 			if (!$this->table->check())
@@ -822,7 +850,7 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 		$this->cleanCache();
 
 		return $newIds;
-	} 
+	}
 
 	/**
 	 * Batch move items to a new category
@@ -833,7 +861,7 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 	 *
 	 * @return  boolean  True if successful, false otherwise and internal error is set.
 	 *
-	 * @since	12.2
+	 * @since 12.2
 	 */
 	protected function batchMove($values, $pks, $contexts)
 	{
@@ -989,7 +1017,7 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 		if (!isset($data['testcompanies']))
 		{
 			$data['testcompanies'] = '';
-		} 
+		}
 
 		// Set the testcompanies string to JSON string.
 		if (isset($data['testcompanies']))
@@ -1051,13 +1079,13 @@ class CostbenefitprojectionModelService_provider extends JModelAdmin
 	}
 
 	/**
-	* Method to change the title
-	*
-	* @param   string   $title   The title.
-	*
-	* @return	array  Contains the modified title and alias.
-	*
-	*/
+	 * Method to change the title
+	 *
+	 * @param   string   $title   The title.
+	 *
+	 * @return	array  Contains the modified title and alias.
+	 *
+	 */
 	protected function _generateNewTitle($title)
 	{
 

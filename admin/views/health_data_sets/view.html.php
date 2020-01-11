@@ -3,9 +3,9 @@
 	Deutsche Gesellschaft für International Zusammenarbeit (GIZ) Gmb 
 /-------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 110 of this MVC
-	@build			17th May, 2018
-	@created		15th July, 2015
+	@version		3.4.x
+	@build			14th August, 2019
+	@created		15th June, 2012
 	@package		Cost Benefit Projection
 	@subpackage		view.html.php
 	@author			Llewellyn van der Merwe <http://www.vdm.io>	
@@ -19,9 +19,6 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla view library
-jimport('joomla.application.component.view');
 
 /**
  * Costbenefitprojection View class for the Health_data_sets
@@ -48,6 +45,8 @@ class CostbenefitprojectionViewHealth_data_sets extends JViewLegacy
 		$this->listOrder = $this->escape($this->state->get('list.ordering'));
 		$this->listDirn = $this->escape($this->state->get('list.direction'));
 		$this->saveOrder = $this->listOrder == 'ordering';
+		// set the return here value
+		$this->return_here = urlencode(base64_encode((string) JUri::getInstance()));
 		// get global action permissions
 		$this->canDo = CostbenefitprojectionHelper::getActions('health_data');
 		$this->canEdit = $this->canDo->get('health_data.edit');
@@ -127,7 +126,7 @@ class CostbenefitprojectionViewHealth_data_sets extends JViewLegacy
 				// add the button to the page
 				$dhtml = $layout->render(array('title' => $title));
 				$bar->appendButton('Custom', $dhtml, 'batch');
-			} 
+			}
 
 			if ($this->state->get('filter.published') == -2 && ($this->canState && $this->canDelete))
 			{
@@ -142,7 +141,7 @@ class CostbenefitprojectionViewHealth_data_sets extends JViewLegacy
 			{
 				JToolBarHelper::custom('health_data_sets.exportData', 'download', '', 'COM_COSTBENEFITPROJECTION_EXPORT_DATA', true);
 			}
-		} 
+		}
 
 		if ($this->canDo->get('core.import') && $this->canDo->get('health_data.import'))
 		{
@@ -193,11 +192,19 @@ class CostbenefitprojectionViewHealth_data_sets extends JViewLegacy
 				'batch[access]',
 				JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text')
 			);
-		} 
+		}
 
 		// Set Causerisk Name Selection
-		$this->causeriskNameOptions = JFormHelper::loadFieldType('Causesrisks')->getOptions();
-		if ($this->causeriskNameOptions)
+		$this->causeriskNameOptions = JFormHelper::loadFieldType('Causesrisks')->options;
+		// We do some sanitation for Causerisk Name filter
+		if (CostbenefitprojectionHelper::checkArray($this->causeriskNameOptions) &&
+			isset($this->causeriskNameOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->causeriskNameOptions[0]->value))
+		{
+			unset($this->causeriskNameOptions[0]);
+		}
+		// Only load Causerisk Name filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->causeriskNameOptions))
 		{
 			// Causerisk Name Filter
 			JHtmlSidebar::addFilter(
@@ -219,7 +226,15 @@ class CostbenefitprojectionViewHealth_data_sets extends JViewLegacy
 
 		// Set Year Selection
 		$this->yearOptions = $this->getTheYearSelections();
-		if ($this->yearOptions)
+		// We do some sanitation for Year filter
+		if (CostbenefitprojectionHelper::checkArray($this->yearOptions) &&
+			isset($this->yearOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->yearOptions[0]->value))
+		{
+			unset($this->yearOptions[0]);
+		}
+		// Only load Year filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->yearOptions))
 		{
 			// Year Filter
 			JHtmlSidebar::addFilter(
@@ -240,8 +255,16 @@ class CostbenefitprojectionViewHealth_data_sets extends JViewLegacy
 		}
 
 		// Set Country Name Selection
-		$this->countryNameOptions = JFormHelper::loadFieldType('Countries')->getOptions();
-		if ($this->countryNameOptions)
+		$this->countryNameOptions = JFormHelper::loadFieldType('Countries')->options;
+		// We do some sanitation for Country Name filter
+		if (CostbenefitprojectionHelper::checkArray($this->countryNameOptions) &&
+			isset($this->countryNameOptions[0]->value) &&
+			!CostbenefitprojectionHelper::checkString($this->countryNameOptions[0]->value))
+		{
+			unset($this->countryNameOptions[0]);
+		}
+		// Only load Country Name filter if it has values
+		if (CostbenefitprojectionHelper::checkArray($this->countryNameOptions))
 		{
 			// Country Name Filter
 			JHtmlSidebar::addFilter(
